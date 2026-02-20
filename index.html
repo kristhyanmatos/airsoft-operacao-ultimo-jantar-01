@@ -75,7 +75,7 @@
 </head>
 <body class="pb-28">
 
-    <!-- Tela de Boot (Necessária para Autoplay de Áudio) -->
+    <!-- Tela de Boot -->
     <div id="boot-screen">
         <div class="p-8 border-2 border-emerald-500 max-w-xs w-full space-y-6">
             <h2 class="text-xl font-black blink italic uppercase">Acesso Restrito</h2>
@@ -86,12 +86,12 @@
         </div>
     </div>
 
-    <!-- Áudio Invisível (Trilha Sonora de Espionagem) -->
+    <!-- Áudio Invisível -->
     <audio id="bg-music" loop preload="auto">
         <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_c369e8b91a.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Cabeçalho do Terminal -->
+    <!-- Cabeçalho -->
     <header class="border-b border-emerald-900 bg-black/80 p-4 sticky top-0 z-50 backdrop-blur-sm">
         <div class="max-w-2xl mx-auto flex justify-between items-center">
             <div class="flex flex-col">
@@ -113,7 +113,7 @@
 
     <main class="max-w-2xl mx-auto p-4 space-y-6">
 
-        <!-- Abas de Comando (Botões Evidentes) -->
+        <!-- Abas -->
         <nav class="flex gap-3 border-b border-emerald-900/50 mb-6 pb-4">
             <button onclick="switchTab('info')" id="tab-info" class="flex-1 text-[11px] font-black uppercase px-4 py-4 terminal-border bg-emerald-950/40 tab-active transition-all active:scale-95 text-center shadow-lg">
                 [ LOGÍSTICA_E_CONDUTA ]
@@ -123,9 +123,8 @@
             </button>
         </nav>
 
-        <!-- Seção: Logística e Conduta (Ativa por Padrão) -->
+        <!-- Seção: Logística -->
         <section id="content-info" class="space-y-6">
-            
             <div class="terminal-border bg-black/40 rounded-sm overflow-hidden">
                 <div class="bg-emerald-900/30 px-3 py-1 border-b border-emerald-900 text-[10px] flex justify-between font-bold">
                     <span>ARQUIVO: DADOS_MOBILIZACAO.EXE</span>
@@ -179,6 +178,26 @@
                 </div>
             </div>
 
+            <div class="terminal-border bg-black/40 rounded-sm overflow-hidden">
+                <div class="bg-emerald-900/30 px-3 py-1 border-b border-emerald-900 text-[10px]">
+                    SISTEMA: IDENTIFICAÇÃO_IFF
+                </div>
+                <div class="p-4 space-y-2">
+                    <div class="flex justify-between p-2 border border-emerald-900/30 text-[11px]">
+                        <span class="font-bold">MÁFIA_MEXICANA [🪙]</span>
+                        <span class="text-emerald-700 uppercase">Traje_de_Gangue</span>
+                    </div>
+                    <div class="flex justify-between p-2 border border-emerald-900/30 text-[11px]">
+                        <span class="font-bold">MÁFIA_AMERICANA [💸]</span>
+                        <span class="text-emerald-700 uppercase">Gangue_ou_PMC</span>
+                    </div>
+                    <div class="flex justify-between p-2 border border-emerald-900/30 text-[11px]">
+                        <span class="font-bold">EXÉRCITO_LOCAL [💂‍♂️]</span>
+                        <span class="text-emerald-700 uppercase">Camuflagem_Total</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-emerald-500 text-black p-4 text-center font-black uppercase tracking-[0.2em] crt-glow">
                 [ HONRA_ACIMA_DE_TUDO ]
             </div>
@@ -192,7 +211,7 @@
                 <h3 class="font-black uppercase text-xs mb-3 text-emerald-400 underline">>> SUMÁRIO_DE_MISSÃO</h3>
                 
                 <p class="text-[11px] leading-relaxed opacity-100 mb-4 border-b border-emerald-900 pb-4 font-bold">
-                    O foco principal de todas as forças é o <strong>Chefe Mafioso</strong>. Ele está escondido na Casa Mexicana. Para capturá-lo, ele deve ser <strong>abatido e curado</strong>. Uma vez dentro da base de uma fação, ele passa a ser um aliado estratégico até o fim da missão.
+                    O foco principal de todas as forças é o <strong>CHEFE MAFIOSO</strong>. Ele está escondido na Casa Mexicana. Para capturá-lo, ele deve ser <strong>abatido e curado</strong>. Uma vez dentro da base de uma fação, ele passa a ser um aliado estratégico até o fim da missão.
                 </p>
 
                 <p class="text-[11px] leading-relaxed opacity-70 italic">
@@ -204,34 +223,59 @@
 
             <!-- Missões por Fação -->
             <div class="space-y-4">
-                <div class="terminal-border bg-black/60 p-4 border-l-4 border-l-red-600">
-                    <span class="text-red-500 font-black text-xs uppercase block mb-2">[ DEFESA: MEXICANA ]</span>
-                    <p class="text-[11px] opacity-80">> PROTEÇÃO_ALVO_VALOR_MAXIMO</p>
+                
+                <!-- Mexicana -->
+                <div class="terminal-border bg-black/60 p-4 border-l-4 border-l-red-600 shadow-lg shadow-red-900/10">
+                    <span class="text-red-500 font-black text-xs uppercase block mb-3">[ DEFESA: MEXICANA ]</span>
+                    <div class="text-[11px] space-y-2">
+                        <p>> RESGUARDAR A CASA MEXICANA</p>
+                        <p>> PROTEGER O CHEFE MAFIOSO</p>
+                        <p class="text-red-400 mt-2 font-bold">> EM CASO DE PERDA: AGUARDAR 20 MINUTOS.</p>
+                        <p class="text-[10px] text-emerald-700 italic">> PÓS-20 MIN: REAGRUPAR TODOS E RENOVAR AS ATADURAS ANTES DA RECAPTURA.</p>
+                    </div>
+                    
                     <div class="bg-black border border-emerald-900 p-4 mt-4 text-center">
                         <div id="timer-display" class="text-4xl font-black mono text-emerald-400 tracking-tighter mb-4 crt-glow">20:00</div>
                         <button onclick="startTimer()" id="btn-timer" class="bg-emerald-900/50 border border-emerald-500 text-[10px] px-4 py-2 hover:bg-emerald-500 hover:text-black transition-all font-black uppercase">INICIAR_CONTROLE_RECAPTURA</button>
                     </div>
                 </div>
 
-                <div class="terminal-border bg-black/60 p-4 border-l-4 border-l-blue-600">
-                    <span class="text-blue-500 font-black text-xs uppercase block mb-2">[ ATAQUE: AMERICANA ]</span>
+                <!-- Americana -->
+                <div class="terminal-border bg-black/60 p-4 border-l-4 border-l-blue-600 shadow-lg shadow-blue-900/10">
+                    <span class="text-blue-500 font-black text-xs uppercase block mb-3">[ ATAQUE: AMERICANA ]</span>
                     <div class="text-[11px] space-y-2">
-                        <p>> LOCALIZAR_BASE_INIMIGA</p>
-                        <p>> CURA: 1_BANDAGEM</p>
+                        <p>> LOCALIZAR A CASA MEXICANA E MATAR O CHEFE.</p>
+                        <p>> PARA CURAR: USE UMA BANDAGEM SUA.</p>
+                        <p>> PEGUE ELE E LEVE PARA A SUA BASE.</p>
+                        <p class="text-blue-400 font-bold">> PROTEJA O CHEFE NA BASE: ELE OPERARÁ AO SEU LADO, NÃO PODENDO SE REBELAR.</p>
                     </div>
                 </div>
 
-                <div class="terminal-border bg-black/60 p-4 border-l-4 border-l-emerald-600">
-                    <span class="text-emerald-500 font-black text-xs uppercase block mb-2">[ ATAQUE: LOCAL ]</span>
+                <!-- Local Army -->
+                <div class="terminal-border bg-black/60 p-4 border-l-4 border-l-emerald-600 shadow-lg shadow-emerald-900/10">
+                    <span class="text-emerald-500 font-black text-xs uppercase block mb-3">[ ATAQUE: EXÉRCITO LOCAL (CAMUFLADO) ]</span>
                     <div class="text-[11px] space-y-2">
-                        <p>> LOCALIZAR_E_PRENDER_ALVO</p>
-                        <p>> CURA: 2_BANDAGENS</p>
+                        <p>> LOCALIZAR E PRENDER O CHEFE MAFIOSO.</p>
+                        <p>> PARA CAPTURAR: PRECISA MATAR E CURAR ELE COM DUAS BANDAGENS.</p>
+                        <p>> CAPTURE O CHEFE E LEVE ELE PRA SUA BASE.</p>
+                        <p class="text-emerald-400 font-bold">> PROTEJA O CHEFE NA BASE: ELE OPERARÁ AO SEU LADO, NÃO PODENDO SE REBELAR.</p>
+                        
+                        <!-- Bloco União -->
+                        <div class="border-t border-emerald-900 pt-3 mt-3">
+                            <p class="font-bold text-emerald-500 mb-2">> PROTOCOLO_UNIÃO (EUA + LOCAL):</p>
+                            <div class="space-y-1 pl-2 border-l border-emerald-900 text-[10px] opacity-90">
+                                <p>- BUSCA ATIVA: UM DEVE IR AO ENCONTRO DO OUTRO PARA ALIANÇA PACÍFICA.</p>
+                                <p>- CURA CONJUNTA: REQUER 4_BANDAGENS SOMADAS.</p>
+                                <p>- EXTRAÇÃO: A BASE DE DESTINO DEVERÁ SER ACORDADA ENTRE OS DOIS COMANDOS.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Barra de Status -->
     <footer class="fixed bottom-0 left-0 right-0 p-3 bg-black border-t border-emerald-900 z-50">
         <div class="max-w-2xl mx-auto flex justify-between items-center px-4">
             <div class="flex gap-6">

@@ -1,214 +1,249 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Briefing Tático - Operação Fronteira</title>
+    <title>TERMINAL: OPERAÇÃO O ÚLTIMO JANTAR</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap');
         
+        :root {
+            --term-green: #10b981;
+            --term-bg: #050a0a;
+            --term-glow: rgba(16, 185, 129, 0.15);
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: #f1f5f9;
+            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--term-bg);
+            color: var(--term-green);
+            background-image: linear-gradient(rgba(16, 185, 129, 0.05) 50%, transparent 50%),
+                              linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.02));
+            background-size: 100% 4px, 3px 100%;
+            position: relative;
         }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        .tab-active { border-bottom: 3px solid #eab308; color: #eab308; }
-        .card-glass {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        /* Efeito de linhas de monitor antigo (Scanlines) */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 100;
+            pointer-events: none;
+            background-size: 100% 2px, 3px 100%;
         }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        .terminal-border {
+            border: 1px solid var(--term-green);
+            box-shadow: 0 0 10px var(--term-glow);
+        }
+
+        .tab-active { 
+            background-color: var(--term-green);
+            color: var(--term-bg);
+            box-shadow: 0 0 15px var(--term-green);
+        }
+
+        .blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .crt-glow {
+            text-shadow: 0 0 5px var(--term-green);
+        }
+
+        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="pb-24">
+<body class="pb-28">
 
-    <!-- Header -->
-    <header class="bg-slate-900 border-b border-slate-700 p-4 sticky top-0 z-50">
-        <div class="flex justify-between items-center max-w-2xl mx-auto">
-            <div class="flex items-center gap-2">
-                <i data-lucide="crosshair" class="text-yellow-500"></i>
-                <h1 class="text-xl font-extrabold uppercase tracking-tighter">OPERAÇÃO <span class="text-yellow-500 font-black">O ÚLTIMO JANTAR</span></h1>
+    <!-- Cabeçalho do Terminal -->
+    <header class="border-b border-emerald-900 bg-black/80 p-4 sticky top-0 z-50 backdrop-blur-sm">
+        <div class="max-w-2xl mx-auto flex justify-between items-center">
+            <div class="flex flex-col">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-emerald-800 uppercase tracking-widest">USUÁRIO: COMANDANTE_ALFA</span>
+                </div>
+                <h1 class="text-lg font-black tracking-widest crt-glow">
+                    > OP_ULTIMO_JANTAR<span class="blink">_</span>
+                </h1>
             </div>
-            <div class="text-[10px] mono bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded border border-yellow-500/30">
-                AMC 🦅 BRIEFING
+            <div class="text-right">
+                <div class="text-[10px] text-emerald-800 uppercase">Status: Criptografado</div>
+                <div class="text-[10px] text-red-500 font-bold animate-pulse">● CONFIDENCIAL</div>
             </div>
         </div>
     </header>
 
     <main class="max-w-2xl mx-auto p-4 space-y-6">
 
-        <!-- Navigation Tabs -->
-        <nav class="flex gap-8 border-b border-slate-800 mb-6">
-            <button onclick="switchTab('info')" id="tab-info" class="pb-2 text-sm font-bold uppercase tab-active">📍 Logística & Conduta</button>
-            <button onclick="switchTab('objetivos')" id="tab-objetivos" class="pb-2 text-sm font-bold uppercase text-slate-400">🎯 Missões e Regras</button>
+        <!-- Abas de Comando -->
+        <nav class="flex gap-4 border-b border-emerald-900/50 mb-6 pb-2">
+            <button onclick="switchTab('info')" id="tab-info" class="text-[10px] font-bold uppercase px-3 py-1 terminal-border tab-active transition-all">
+                $ LOGÍSTICA_E_CONDUTA
+            </button>
+            <button onclick="switchTab('objetivos')" id="tab-objetivos" class="text-[10px] font-bold uppercase px-3 py-1 terminal-border text-emerald-500/60 hover:text-emerald-400 transition-all">
+                $ PARÂMETROS_MISSÃO
+            </button>
         </nav>
 
-        <!-- Informações e Conduta Section -->
-        <section id="content-info" class="space-y-4">
-            <!-- Logística -->
-            <div class="card-glass p-5 rounded-xl space-y-4 border-l-4 border-l-yellow-500 shadow-xl">
-                <h2 class="text-lg font-bold flex items-center gap-2 uppercase">
-                    <i data-lucide="map" class="w-5 h-5 text-yellow-500"></i> Local e Horário
-                </h2>
-                <div class="space-y-3 text-sm">
-                    <a href="https://www.google.com/maps?q=-5.427665710449219,-48.92995071411133&z=17&hl=pt-BR" target="_blank" class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg hover:bg-slate-800 transition-colors border border-slate-700">
-                        <i data-lucide="map-pin" class="text-red-500"></i>
-                        <div>
-                            <span class="block font-bold">Chácara Modelo</span>
-                            <span class="text-xs text-blue-400 underline">Abrir no Google Maps</span>
+        <!-- Seção: Logística e Conduta -->
+        <section id="content-info" class="space-y-6">
+            
+            <!-- Janela: Mobilização -->
+            <div class="terminal-border bg-black/40 rounded-sm overflow-hidden">
+                <div class="bg-emerald-900/30 px-3 py-1 border-b border-emerald-900 text-[10px] flex justify-between">
+                    <span>ARQUIVO: DADOS_MOBILIZACAO.EXE</span>
+                    <i data-lucide="minus" class="w-3 h-3"></i>
+                </div>
+                <div class="p-5 space-y-4">
+                    <div class="grid grid-cols-1 gap-4">
+                        <a href="https://www.google.com/maps?q=-5.427665710449219,-48.92995071411133&z=17&hl=pt-BR" target="_blank" class="flex items-center gap-4 p-3 bg-emerald-950/20 border border-emerald-900 hover:bg-emerald-900/20 transition-all">
+                            <i data-lucide="map-pin" class="text-emerald-400"></i>
+                            <div class="text-sm">
+                                <span class="block font-bold">LOCAL: CHÁCARA_MODELO</span>
+                                <span class="text-[10px] text-emerald-600 underline">[VERIFICAR_COORDENADAS_GPS]</span>
+                            </div>
+                        </a>
+                        <div class="flex items-center gap-4 p-3 bg-emerald-950/20 border border-emerald-900">
+                            <i data-lucide="calendar" class="text-emerald-400 w-5 h-5"></i>
+                            <span class="font-bold text-sm uppercase">DATA: 22_FEVEREIRO_2026</span>
                         </div>
-                    </a>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
-                            <i data-lucide="calendar" class="text-yellow-500 w-4 h-4"></i>
-                            <span class="font-bold text-xs">22/02/2026</span>
-                        </div>
-                        <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
-                            <i data-lucide="clock" class="text-green-500 w-4 h-4"></i>
-                            <span class="font-bold text-xs">08:00hs</span>
+                        <div class="flex items-center gap-4 p-3 bg-emerald-950/20 border border-emerald-900">
+                            <i data-lucide="clock" class="text-emerald-400 w-5 h-5"></i>
+                            <span class="font-bold text-sm uppercase">HORA: 08:00_HORÁRIO_LOCAL</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Regras de Vida e Respawn -->
-            <div class="card-glass p-5 rounded-xl space-y-4 border-l-4 border-l-green-500 shadow-xl">
-                <h2 class="text-lg font-bold flex items-center gap-2 uppercase">
-                    <i data-lucide="heart-pulse" class="w-5 h-5 text-green-500"></i> Regeneração (Respawn)
-                </h2>
-                <div class="space-y-3">
-                    <div class="p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-3">
-                        <i data-lucide="target" class="text-red-500 w-5 h-5"></i>
-                        <span class="text-sm font-bold">SNIPER: Não possui autocura.</span>
+            <!-- Janela: Sinais Vitais e Respawn -->
+            <div class="terminal-border bg-black/40 rounded-sm overflow-hidden border-l-4 border-l-emerald-500">
+                <div class="bg-emerald-900/30 px-3 py-1 border-b border-emerald-900 text-[10px]">
+                    MÓDULO: PROTOCOLOS_REGEN_VITAL
+                </div>
+                <div class="p-5 space-y-4">
+                    <div class="bg-red-900/20 border border-red-900 p-3 flex items-center gap-3">
+                        <i data-lucide="alert-triangle" class="text-red-500"></i>
+                        <span class="text-xs font-bold text-red-400 uppercase tracking-tighter">ALERTA: SNIPER NÃO POSSUI AUTO-CURA</span>
                     </div>
                     
-                    <div class="space-y-2">
-                        <p class="text-[10px] uppercase text-slate-500 font-bold mb-1 italic">Tempo total de espera: 10 minutos</p>
-                        <div class="grid gap-2">
-                            <div class="p-3 bg-slate-800/50 rounded-lg text-[11px] leading-relaxed border border-slate-700">
-                                <span class="text-green-500 font-bold block mb-1">OPÇÃO A</span>
-                                5 min no local onde foi abatido + 5 min na base.
+                    <div class="space-y-3">
+                        <p class="text-[10px] text-emerald-700 font-bold mb-1">> TEMPO_DE_ESPERA: 10_MINUTOS_TOTAL</p>
+                        <div class="space-y-2">
+                            <div class="p-2 bg-emerald-950/40 border border-emerald-900/50 text-[11px]">
+                                <span class="text-emerald-400 font-bold">OPÇÃO_A:</span> 5min (ONDE_MORREU) + 5min (BASE)
                             </div>
-                            <div class="p-3 bg-slate-800/50 rounded-lg text-[11px] leading-relaxed border border-slate-700">
-                                <span class="text-green-500 font-bold block mb-1">OPÇÃO B</span>
-                                10 min no local onde foi abatido, toca na base e retorna ao jogo.
+                            <div class="p-2 bg-emerald-950/40 border border-emerald-900/50 text-[11px]">
+                                <span class="text-emerald-400 font-bold">OPÇÃO_B:</span> 10min (ONDE_MORREU) + TOQUE (BASE)
                             </div>
-                            <div class="p-3 bg-slate-800/50 rounded-lg text-[11px] leading-relaxed border border-slate-700">
-                                <span class="text-green-500 font-bold block mb-1">OPÇÃO C</span>
-                                10 min direto na base e retorna ao jogo.
+                            <div class="p-2 bg-emerald-950/40 border border-emerald-900/50 text-[11px]">
+                                <span class="text-emerald-400 font-bold">OPÇÃO_C:</span> 10min (DIRETO_NA_BASE)
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Fardamento -->
-            <div class="card-glass p-5 rounded-xl space-y-4 shadow-xl">
-                <h2 class="text-lg font-bold flex items-center gap-2 uppercase">
-                    <i data-lucide="shirt" class="w-5 h-5 text-blue-400"></i> Exércitos & Fardamento
-                </h2>
-                <div class="space-y-2">
-                    <div class="flex justify-between p-3 bg-slate-800/30 rounded-lg border border-slate-700">
-                        <div class="flex items-center gap-2 text-sm font-bold">🇲🇽 Mexicana <span class="text-yellow-500">🪙</span></div>
-                        <span class="text-[10px] text-slate-400">Trajes de Gangue</span>
+            <!-- Janela: Identificação IFF -->
+            <div class="terminal-border bg-black/40 rounded-sm overflow-hidden">
+                <div class="bg-emerald-900/30 px-3 py-1 border-b border-emerald-900 text-[10px]">
+                    SISTEMA: IDENTIFICAÇÃO_AMIGO_OU_INIMIGO
+                </div>
+                <div class="p-4 space-y-2">
+                    <div class="flex justify-between p-2 border border-emerald-900/30 text-[11px]">
+                        <span class="font-bold">MÁFIA_MEXICANA [🪙]</span>
+                        <span class="text-emerald-700 uppercase">Traje_de_Gangue</span>
                     </div>
-                    <div class="flex justify-between p-3 bg-slate-800/30 rounded-lg border border-slate-700">
-                        <div class="flex items-center gap-2 text-sm font-bold">🇺🇸 Americana <span class="text-blue-500">💸</span></div>
-                        <span class="text-[10px] text-slate-400">Gangue ou PMC</span>
+                    <div class="flex justify-between p-2 border border-emerald-900/30 text-[11px]">
+                        <span class="font-bold">MÁFIA_AMERICANA [💸]</span>
+                        <span class="text-emerald-700 uppercase">Gangue_ou_PMC</span>
                     </div>
-                    <div class="flex justify-between p-3 bg-slate-800/30 rounded-lg border border-slate-700">
-                        <div class="flex items-center gap-2 text-sm font-bold">💂‍♂️ Local</div>
-                        <span class="text-[10px] text-slate-400">Camuflado</span>
+                    <div class="flex justify-between p-2 border border-emerald-900/30 text-[11px]">
+                        <span class="font-bold">EXÉRCITO_LOCAL [💂‍♂️]</span>
+                        <span class="text-emerald-700 uppercase">Camuflagem_Total</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Itens Obrigatórios -->
-            <div class="card-glass p-5 rounded-xl space-y-4 border-l-4 border-l-red-500 shadow-xl">
-                <h2 class="text-lg font-bold flex items-center gap-2 uppercase">
-                    <i data-lucide="shield-alert" class="w-5 h-5 text-red-500"></i> Checklist Obrigatório
-                </h2>
-                <div class="grid grid-cols-2 gap-2 text-[11px]">
-                    <div class="flex items-center gap-2 p-2 bg-slate-900 rounded border border-slate-700">
-                        <i data-lucide="eye" class="w-4 h-4 text-white"></i> Óculos de Proteção
-                    </div>
-                    <div class="flex items-center gap-2 p-2 bg-slate-900 rounded border border-slate-700 text-blue-400">
-                        <i data-lucide="bandage" class="w-4 h-4"></i> 3 Bandagens/Operador
-                    </div>
-                    <div class="flex items-center gap-2 p-2 bg-slate-900 rounded border border-slate-700 text-yellow-500">
-                        <i data-lucide="megaphone" class="w-4 h-4"></i> Apito de Emergência
-                    </div>
-                    <div class="flex items-center gap-2 p-2 bg-slate-900 rounded border border-slate-700 text-red-500">
-                        <i data-lucide="flag" class="w-4 h-4"></i> Pano Vermelho
-                    </div>
-                </div>
+            <!-- Banner de Honra -->
+            <div class="bg-emerald-500 text-black p-4 text-center font-black uppercase tracking-[0.2em] crt-glow">
+                [ SISTEMA_BASEADO_NA_HONRA ]
             </div>
         </section>
 
-        <!-- Objetivos Section -->
+        <!-- Seção: Parâmetros da Missão -->
         <section id="content-objetivos" class="hidden space-y-6">
             
             <!-- Resumo Geral -->
-            <div class="bg-blue-600/20 border border-blue-500/30 p-5 rounded-xl text-sm leading-relaxed relative overflow-hidden">
-                <div class="absolute -right-4 -top-4 opacity-10"><i data-lucide="target" class="w-24 h-24"></i></div>
-                <h3 class="font-black uppercase tracking-widest text-blue-400 mb-2">Objetivo Geral</h3>
-                <p>O foco principal de todas as forças é o <strong>Chefe Mafioso</strong>. Ele está escondido na Casa Mexicana. Para capturá-lo, ele deve ser <strong>abatido e curado</strong>. Uma vez dentro da base de uma fação, ele passa a ser um aliado estratégico até o fim da missão.</p>
+            <div class="terminal-border bg-emerald-950/10 p-5 relative overflow-hidden">
+                <div class="absolute right-2 top-2 opacity-20"><i data-lucide="target" class="w-12 h-12"></i></div>
+                <h3 class="font-black uppercase text-xs mb-3 text-emerald-400 underline">>> SUMÁRIO_DE_MISSÃO</h3>
+                <p class="text-[11px] leading-relaxed opacity-80">
+                    OBJETIVO_ALVO: CHEFE_MAFIOSO. <br>
+                    LOCALIZAÇÃO: CASA_MEXICANA. <br>
+                    STATUS: CAPTURÁVEL APÓS ABATE E PROTOCOLO DE CURA. <br>
+                    NOTA: UMA VEZ NA BASE CAPTORA, O ALVO TORNA-SE ALIADO_ESTRATÉGICO.
+                </p>
             </div>
 
-            <!-- Card: Máfia Mexicana -->
-            <div class="card-glass p-5 rounded-xl space-y-4 border-l-4 border-l-red-500 shadow-xl">
-                <h2 class="text-lg font-bold flex items-center justify-between uppercase">
-                    <span class="flex items-center gap-2"><i data-lucide="shield" class="text-red-500"></i> Máfia Mexicana</span>
-                    <span class="text-xs font-black mono bg-red-500/20 text-red-500 px-2 py-1 rounded">DEFESA</span>
-                </h2>
-                <div class="space-y-3 text-sm">
-                    <p class="flex gap-2 items-start"><i data-lucide="check-circle" class="w-4 h-4 text-red-500 flex-shrink-0 mt-1"></i> Proteger a <strong>CASA MEXICANA</strong> e o Chefe.</p>
-                    <p class="flex gap-2 items-start"><i data-lucide="check-circle" class="w-4 h-4 text-red-500 flex-shrink-0 mt-1"></i> Se o chefe for levado, a equipe deve aguardar <strong>20 minutos</strong> para tentar a recaptura.</p>
+            <!-- Missão: Mexicana -->
+            <div class="terminal-border bg-black/60 p-4 border-l-4 border-l-red-600">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-red-500 font-black text-xs uppercase">[ DEFESA: MÁFIA MEXICANA ]</span>
+                    <i data-lucide="shield" class="w-4 h-4 text-red-600"></i>
+                </div>
+                <div class="text-[11px] space-y-2 mb-4">
+                    <p>> MANTER_CONTROLE: CASA_MEXICANA</p>
+                    <p>> PROTEÇÃO_DO_CHEFE: PRIORIDADE_MÁXIMA</p>
+                    <p class="text-red-400">> TEMPO_PARA_RECAPTURA: 20_MINUTOS</p>
                 </div>
                 
-                <!-- Timer Integrado -->
-                <div class="bg-slate-900/80 p-4 rounded-lg text-center border border-slate-700 mt-2">
-                    <div id="timer-display" class="text-4xl font-black mono text-yellow-500 mb-3">20:00</div>
+                <!-- Cronômetro Terminal -->
+                <div class="bg-black border border-emerald-900 p-4 rounded-sm text-center">
+                    <div id="timer-display" class="text-4xl font-black mono text-emerald-400 tracking-tighter mb-4 crt-glow">20:00</div>
                     <div class="flex gap-2 justify-center">
-                        <button onclick="startTimer()" id="btn-timer" class="bg-red-600 px-4 py-2 rounded-lg font-bold text-[10px] uppercase">Iniciar Contagem</button>
-                        <button onclick="resetTimer()" class="bg-slate-700 px-3 py-2 rounded-lg"><i data-lucide="rotate-ccw" class="w-3 h-3"></i></button>
+                        <button onclick="startTimer()" id="btn-timer" class="bg-emerald-900/50 border border-emerald-500 text-[10px] px-4 py-2 hover:bg-emerald-500 hover:text-black transition-all font-bold">EXECUTAR: INICIAR_TEMPO</button>
+                        <button onclick="resetTimer()" class="border border-emerald-900 px-3 py-2 text-emerald-500 hover:bg-emerald-900/30"><i data-lucide="refresh-cw" class="w-3 h-3"></i></button>
                     </div>
                 </div>
             </div>
 
-            <!-- Card: Máfia Americana -->
-            <div class="card-glass p-5 rounded-xl space-y-4 border-l-4 border-l-blue-500 shadow-xl">
-                <h2 class="text-lg font-bold flex items-center justify-between uppercase">
-                    <span class="flex items-center gap-2"><i data-lucide="flag" class="text-blue-500"></i> Máfia Americana</span>
-                    <span class="text-xs font-black mono bg-blue-500/20 text-blue-500 px-2 py-1 rounded">ATAQUE</span>
-                </h2>
-                <div class="space-y-3 text-sm">
-                    <p class="flex gap-2 items-start"><i data-lucide="search" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-1"></i> Localizar a casa e abater o chefe.</p>
-                    <div class="bg-blue-500/10 p-2 rounded border border-blue-500/20 flex items-center justify-between">
-                        <span>Cura necessária:</span>
-                        <span class="font-bold flex items-center gap-1"><i data-lucide="bandage" class="w-4 h-4"></i> 1 Bandagem</span>
+            <!-- Missão: Americana -->
+            <div class="terminal-border bg-black/60 p-4 border-l-4 border-l-blue-600">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-blue-500 font-black text-xs uppercase">[ ATAQUE: MÁFIA AMERICANA ]</span>
+                    <i data-lucide="flag" class="w-4 h-4 text-blue-600"></i>
+                </div>
+                <div class="text-[11px] space-y-3">
+                    <p>> LOCALIZAR_BASE_INIMIGA</p>
+                    <div class="flex items-center justify-between bg-blue-900/20 p-2 border border-blue-900/40">
+                        <span>REQUISITO_CURA:</span>
+                        <span class="font-bold flex gap-1 items-center"><i data-lucide="plus-square" class="w-4 h-4"></i> 1_BANDAGEM</span>
                     </div>
-                    <p class="flex gap-2 items-start"><i data-lucide="truck" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-1"></i> Extrair o chefe para a <strong>BASE AMERICANA</strong>.</p>
+                    <p>> EXTRAIR_ALVO_PARA_BASE_EUA</p>
                 </div>
             </div>
 
-            <!-- Card: Exército Local -->
-            <div class="card-glass p-5 rounded-xl space-y-4 border-l-4 border-l-green-500 shadow-xl">
-                <h2 class="text-lg font-bold flex items-center justify-between uppercase">
-                    <span class="flex items-center gap-2"><i data-lucide="users" class="text-green-500"></i> Exército Local</span>
-                    <span class="text-xs font-black mono bg-green-500/20 text-green-500 px-2 py-1 rounded">ATAQUE</span>
-                </h2>
-                <div class="space-y-3 text-sm">
-                    <p class="flex gap-2 items-start"><i data-lucide="search" class="w-4 h-4 text-green-500 flex-shrink-0 mt-1"></i> Localizar e prender o chefe mafioso.</p>
-                    <div class="bg-green-500/10 p-2 rounded border border-green-500/20 flex items-center justify-between">
-                        <span>Cura necessária:</span>
-                        <span class="font-bold flex items-center gap-1"><i data-lucide="bandage" class="w-4 h-4"></i><i data-lucide="bandage" class="w-4 h-4"></i> 2 Bandagens</span>
+            <!-- Missão: Exército Local -->
+            <div class="terminal-border bg-black/60 p-4 border-l-4 border-l-emerald-600">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-emerald-500 font-black text-xs uppercase">[ ATAQUE: EXÉRCITO LOCAL ]</span>
+                    <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i>
+                </div>
+                <div class="text-[11px] space-y-3">
+                    <p>> LOCALIZAR_E_PRENDER_ALVO</p>
+                    <div class="flex items-center justify-between bg-emerald-900/20 p-2 border border-emerald-900/40">
+                        <span>REQUISITO_CURA:</span>
+                        <span class="font-bold flex gap-1 items-center"><i data-lucide="plus-square" class="w-4 h-4 text-emerald-400"></i> x2_UNIDADES</span>
                     </div>
-                    <p class="bg-slate-800 p-2 rounded text-[11px] italic text-slate-400">Podem formar aliança com americanos para captura conjunta. Se unidos, requerem <strong>4 bandagens</strong> totais.</p>
+                    <p class="text-[10px] text-emerald-700 italic border-t border-emerald-900 pt-2">
+                        PROTOCOLO_UNIÃO: DIPLOMACIA_EUA_ATIVA. CURA_REQUERIDA: 4_BANDAGENS.
+                    </p>
                 </div>
             </div>
 
@@ -216,26 +251,33 @@
 
     </main>
 
-    <!-- Global Info Bar -->
-    <footer class="fixed bottom-0 left-0 right-0 p-3 bg-slate-900/95 backdrop-blur-lg border-t border-slate-700 z-40">
-        <div class="max-w-2xl mx-auto flex justify-around items-center text-[10px] mono uppercase text-slate-400">
-            <div class="flex flex-col items-center">
-                <i data-lucide="eye" class="w-4 h-4 mb-1 text-yellow-500"></i>
-                <span>Proteção</span>
+    <!-- Barra de Status do SO -->
+    <footer class="fixed bottom-0 left-0 right-0 p-3 bg-black border-t border-emerald-900 z-50">
+        <div class="max-w-2xl mx-auto flex justify-between items-center px-4">
+            <div class="flex gap-6">
+                <div class="flex flex-col items-center">
+                    <i data-lucide="eye" class="w-4 h-4 text-emerald-500 mb-1"></i>
+                    <span class="text-[8px] uppercase">Óculos_ON</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <i data-lucide="bandage" class="w-4 h-4 text-emerald-500 mb-1"></i>
+                    <span class="text-[8px] uppercase">Kit_3_Band</span>
+                </div>
             </div>
-            <div class="flex flex-col items-center">
-                <i data-lucide="ambulance" class="w-4 h-4 mb-1 text-blue-400"></i>
-                <span>3 Bandagens</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <i data-lucide="medal" class="w-4 h-4 mb-1 text-green-500"></i>
-                <span>Honra</span>
+            <div class="text-[10px] font-bold text-emerald-500 animate-pulse tracking-widest">
+                SISTEMA_ATIVO: <span id="current-time">00:00:00</span>
             </div>
         </div>
     </footer>
 
     <script>
         lucide.createIcons();
+
+        // Atualiza o relógio do rodapé
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('current-time').innerText = now.toLocaleTimeString('pt-BR');
+        }, 1000);
 
         function switchTab(tabId) {
             const tabs = ['info', 'objetivos'];
@@ -245,18 +287,18 @@
                 if(content) content.classList.add('hidden');
                 if(tab) {
                     tab.classList.remove('tab-active');
-                    tab.classList.add('text-slate-400');
+                    tab.classList.add('text-emerald-500/60');
                 }
             });
 
             document.getElementById(`content-${tabId}`).classList.remove('hidden');
             const activeTab = document.getElementById(`tab-${tabId}`);
             activeTab.classList.add('tab-active');
-            activeTab.classList.remove('text-slate-400');
+            activeTab.classList.remove('text-emerald-500/60');
             window.scrollTo(0,0);
         }
 
-        // Timer Logic
+        // Lógica do Cronômetro
         let timer;
         let timeLeft = 20 * 60;
         let isRunning = false;
@@ -271,18 +313,18 @@
         function startTimer() {
             if (isRunning) {
                 clearInterval(timer);
-                document.getElementById('btn-timer').innerText = "Continuar";
+                document.getElementById('btn-timer').innerText = "EXECUTAR: RETOMAR_CONTAGEM";
                 isRunning = false;
             } else {
                 isRunning = true;
-                document.getElementById('btn-timer').innerText = "Pausar";
+                document.getElementById('btn-timer').innerText = "EXECUTAR: PAUSAR_CONTAGEM";
                 timer = setInterval(() => {
                     if (timeLeft > 0) {
                         timeLeft--;
                         updateTimerDisplay();
                     } else {
                         clearInterval(timer);
-                        alert("TEMPO ESGOTADO! RECAPTURA AUTORIZADA.");
+                        alert("SISTEMA: TEMPO DE COOLDOWN FINALIZADO. RECAPTURA AUTORIZADA.");
                         resetTimer();
                     }
                 }, 1000);
@@ -294,7 +336,7 @@
             timeLeft = 20 * 60;
             isRunning = false;
             updateTimerDisplay();
-            document.getElementById('btn-timer').innerText = "Iniciar Contagem";
+            document.getElementById('btn-timer').innerText = "EXECUTAR: INICIAR_TEMPO";
         }
     </script>
 </body>

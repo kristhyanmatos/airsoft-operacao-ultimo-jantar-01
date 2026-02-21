@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL: OPERAÇÃO O ÚLTIMO JANTAR</title>
+    <title>TERMINAL: AIRSOFT - OPERAÇÃO O ÚLTIMO JANTAR</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -79,11 +79,16 @@
     <div id="boot-screen">
         <div class="p-8 border-2 border-emerald-500 max-w-xs w-full space-y-6">
             <h2 class="text-xl font-black blink italic uppercase">Acesso Restrito</h2>
-            <div class="text-[10px] text-emerald-800 mono">AMC 🦅</div>
+            <div class="text-[10px] text-emerald-800 mono">AMC 🦅</div>            
             <div class="text-[10px] text-emerald-800 mono">DESCRIPTOGRAFANDO_DADOS...</div>
             <button onclick="bootSystem()" class="w-full bg-emerald-500 text-black font-black py-4 uppercase tracking-tighter hover:bg-white transition-all">
                 [ INICIAR TERMINAL ]
             </button>
+
+            <!-- Indicador claro de Airsoft -->
+            <div class="text-[11px] text-emerald-500 font-bold uppercase tracking-widest border border-emerald-500/30 bg-emerald-900/20 py-2">
+                Simulação Tática de Airsoft
+            </div>
         </div>
     </div>
 
@@ -97,7 +102,7 @@
         <div class="max-w-2xl mx-auto flex justify-between items-center">
             <div class="flex flex-col">
                 <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold text-emerald-800 uppercase tracking-widest">USUÁRIO: COMANDANTE_ALFA</span>
+                    <span class="text-xs font-bold text-emerald-800 uppercase tracking-widest">AIRSOFT OP | USR: COMANDANTE_ALFA</span>
                 </div>
                 <h1 class="text-lg font-black tracking-widest crt-glow">
                     > OP_ULTIMO_JANTAR<span class="blink">_</span>
@@ -201,7 +206,7 @@
 
             <div class="terminal-border bg-black/40 rounded-sm overflow-hidden border-l-4 border-l-yellow-500">
                 <div class="bg-emerald-900/30 px-3 py-1 border-b border-emerald-900 text-[10px] font-bold">
-                    MÓDULO: EQUIPAMENTO_DE_PROTEÇÃO
+                    MÓDULO: EQUIPAMENTO_DE_PROTEÇÃO (AIRSOFT)
                 </div>
                 <div class="p-5 space-y-3">
                     <div class="grid grid-cols-2 gap-3 text-[11px] font-bold">
@@ -238,10 +243,47 @@
                 </p>
 
                 <p class="text-[11px] leading-relaxed opacity-70 italic">
+                    TIPO_OP: SIMULAÇÃO TÁTICA DE AIRSOFT. <br>
                     ALVO: CHEFE_MAFIOSO. <br>
                     LOC: CASA_MEXICANA. <br>
                     STATUS: CAPTURÁVEL PÓS-ABATE + CURA.
                 </p>
+            </div>
+
+            <!-- Perfil do Alvo (HVT) -->
+            <div class="terminal-border bg-black/60 p-4 border-l-4 border-l-yellow-500 shadow-lg shadow-yellow-900/10">
+                <div class="flex items-center justify-between border-b border-emerald-900/50 pb-2 mb-3">
+                    <span class="text-yellow-500 font-black text-xs uppercase tracking-widest">[ PERFIL DO ALVO: HVT-01 ]</span>
+                    <i data-lucide="scan-face" class="w-4 h-4 text-yellow-600"></i>
+                </div>
+                <div class="flex gap-4 items-start">
+                    <!-- Foto do Chefe (Arquivo Local) -->
+                    <div class="w-24 h-24 flex-shrink-0 border border-emerald-500 bg-emerald-950/30 overflow-hidden relative">
+                        <!-- Efeito scanline na foto -->
+                        <div class="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.4)_50%)] bg-[length:100%_4px] z-10 pointer-events-none"></div>
+                        <img src="chefe.jpeg" alt="[IMAGEM_CLASSIFICADA]" class="w-full h-full object-cover filter sepia hue-rotate-[70deg] contrast-125 opacity-80" id="foto-chefe">
+                    </div>
+                    <!-- Dados do Chefe -->
+                    <div class="flex-1 text-[10px] space-y-1.5 text-emerald-600 font-bold uppercase tracking-wide">
+                        <p><span class="text-emerald-400">ID:</span> CHEFE_MAFIOSO</p>
+                        <p><span class="text-emerald-400">NÍVEL_AMEAÇA:</span> EXTREMO</p>
+                        <p><span class="text-emerald-400">STATUS:</span> <span class="text-red-500 blink bg-red-900/20 px-1">PROCURADO</span></p>
+                        <p><span class="text-emerald-400">DIRETRIZ:</span> CAPTURA_VIVA_OBRIGATÓRIA</p>
+                        
+                        <!-- Lista de Crimes (Registro Criminal) -->
+                        <div class="border-t border-emerald-900/50 pt-2 mt-2">
+                            <p class="text-emerald-400 mb-1">>> REGISTRO_CRIMINAL:</p>
+                            <ul class="list-disc pl-4 text-[9px] text-emerald-700 space-y-0.5 opacity-90">
+                                <li>CONTRABANDO INTERNACIONAL DE ARMAS</li>
+                                <li>LAVAGEM DE DINHEIRO E EVASÃO DE DIVISAS</li>
+                                <li>FORMAÇÃO DE CARTEL (NARCOTRÁFICO)</li>
+                                <li>CORRUPÇÃO DE ALTOS OFICIAIS</li>
+                            </ul>
+                        </div>
+
+                        <p class="text-[8px] text-yellow-500/80 italic mt-2 leading-tight border-t border-emerald-900/50 pt-2">>> ESPERANDO UPLOAD DE RECONHECIMENTO FACIAL...</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Missões por Fação -->
